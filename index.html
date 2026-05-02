@@ -135,7 +135,7 @@
       border-radius: 0;
       cursor: pointer;
       font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-      font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+      font-size: clamp(1.25rem, 1.2vw, 1.75rem);
       font-weight: 600;
       text-align: left;
       line-height: 1.3;
@@ -272,7 +272,7 @@ const COMPETENCIES = [
     color: "#5B2D8E",
     subtopics: [
       { id: "recognized-potential",       label: "Recognized Potential" },
-      { id: "leading-without-authority",  label: "Leading Without Authority" },
+      { id: "leading-without-authority",  label: "Leading Up" },
       { id: "building-representing-team", label: "Building and Representing the Team" }
     ]
   },
@@ -457,6 +457,28 @@ const COMPETENCIES = [
       goBack();
     }
   });
+const slideWrapper = document.getElementById('slide-wrapper');
+
+function scaleIframe() {
+  if (!slideWrapper) return;
+  const frame = document.getElementById('slide-frame');
+  const style = getComputedStyle(frame);
+  const slideW = parseFloat(style.getPropertyValue('--slide-w')) || 1024;
+  const slideH = parseFloat(style.getPropertyValue('--slide-h')) || 949;
+  const containerW = slideWrapper.offsetWidth;
+  const containerH = slideWrapper.offsetHeight;
+  const scale = Math.max(containerW / slideW, containerH / slideH);
+  frame.style.transform = `scale(${scale})`;
+  frame.style.marginLeft = ((containerW - slideW * scale) / 2) + 'px';
+  frame.style.marginTop  = ((containerH - slideH * scale) / 2) + 'px';
+}
+
+window.addEventListener('resize', scaleIframe);
+scaleIframe();
+if (window.ResizeObserver && slideWrapper) {
+  new ResizeObserver(scaleIframe).observe(slideWrapper);
+}
+  
 })();
 </script>
 
